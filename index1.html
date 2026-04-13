@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾喵一口汪一下 | Paws & Relax Cafe</title>
+    <style>
+        /* 1. 寵物主題配色方案 */
+        :root {
+            --primary-orange: #f39c12;   /* 溫暖橘，主色調 */
+            --soft-brown: #8d6e63;      /* 咖啡棕，文字與細節 */
+            --grass-green: #81c784;     /* 草綠色，點綴用 */
+            --cream-bg: #fffbf0;        /* 奶油白背景 */
+            --text-main: #4e342e;       /* 深啡色文字 */
+            --card-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', "Microsoft JhengHei", sans-serif;
+            background-color: var(--cream-bg);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* 2. 導覽列 */
+        nav {
+            background-color: white;
+            padding: 0.8rem 2rem;
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--primary-orange);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: var(--soft-brown);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+
+        .nav-links button:hover, .nav-links button.active {
+            color: white;
+            background-color: var(--primary-orange);
+        }
+
+        /* 3. 頁面切換動畫 */
+        .page {
+            display: none;
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 75vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 4. 元件樣式 - Banner 照片 */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+            url('https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 { color: white; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { color: rgba(255,255,255,0.9); font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+
+        /* 卡片設計 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--card-white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #f0e6d6;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 為了讓展示台的邊牧照片顯示完整，我們特別給他一個樣式 */
+        .card-img.contain-img {
+            object-fit: contain;
+            background-color: #f9f9f9;
+        }
+
+        .card-body { 
+            padding: 20px; 
+            flex-grow: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--grass-green);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--soft-brown);
+            color: white;
+            margin-top: 60px;
+        }
+
+        /* 表單樣式 */
+        .booking-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            background: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🐾 Paws & Relax</div>
+        <div class="nav-links">
+            <button class="active" onclick="switchPage('home')">首頁</button>
+            <button onclick="switchPage('pets')">萌寵成員</button>
+            <button onclick="switchPage('menu')">療癒餐點</button>
+            <button onclick="switchPage('rules')">入店須知</button>
+            <button onclick="switchPage('book')">線上訂位</button>
+        </div>
+    </nav>
+
+    <section id="home" class="page active">
+        <div class="hero">
+            <h1>啜一口咖啡，摸一下毛孩</h1>
+            <p>全台最溫馨的貓狗友善空間，與我們的毛萌主一起度過午後。</p>
+            <button onclick="switchPage('book')" style="padding: 12px 30px; background: var(--primary-orange); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;">立即預約</button>
+        </div>
+        <h2 style="text-align: center;">🌟 本月人氣萌主</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.ctee.com.tw/newsphoto/2024-04-26/1024/20240426701072.jpg" class="card-img">
+                <div class="card-body">
+                    <span class="tag">店長</span>
+                    <h3>北冥 (Beiming)</h3>
+                    <p>體型巨大的溫柔巨人，擁有美麗的長毛和威嚴的外表，個性卻像個愛撒嬌的小公主。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://storage.googleapis.com/www-cheers-com-tw/article/202011/article-5fb7561bb96c2.jpg" class="card-img contain-img" alt="邊牧">
+                <div class="card-body">
+                    <span class="tag">副店長/公關</span>
+                    <h3>邊牧</h3>
+                    <p>店內的活力與智慧擔當，聰明絕頂且充滿熱情，會主動銜著玩具邀請你一起互動玩耍。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pets" class="page">
+        <h2 style="text-align: center;">🐾 認識我們的毛家人</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_1280.jpg" class="card-img">
+                <div class="card-body">
+                    <span class="tag">汪汪隊</span>
+                    <h3>金毛</h3>
+                    <p>永遠的暖男，性格溫順熱情，對每位客人都充滿善意，是店內的療癒系代表。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://megapx-assets.dcard.tw/images/3e056149-812c-408c-8789-10b98e6f19d3/1280.webp" class="card-img">
+                <div class="card-body">
+                    <span class="tag">汪汪隊</span>
+                    <h3>薩摩耶</h3>
+                    <p>人稱「微笑天使」，擁有雪白蓬鬆的毛髮和迷人的笑容，單是看著就能忘卻煩惱。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://today-obs.line-scdn.net/0hZW_onS5yBXhiFhJpBrB6L1pACQlRcB9xQHEfGUISU0AaOkMrDHlWG0NEW1Qcc0cnQnAaSkMWXBtOJUonCQ/w1200" class="card-img">
+                <div class="card-body">
+                    <span class="tag">汪汪隊</span>
+                    <h3>柯基</h3>
+                    <p>富有正義感的小夥伴，擁有一雙明亮的眼睛和可愛的圓屁屁，性格警覺但對熟悉的人非常忠誠。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://media.stork.pet/wp-content/uploads/2023/07/333-34.jpg" class="card-img">
+                <div class="card-body">
+                    <span class="tag">喵喵隊</span>
+                    <h3>金漸層</h3>
+                    <p>圓滾滾的臉蛋和金黃色的毛髮，個性溫和懶散，最喜歡在陽光下曬太陽打盹。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://www.philosophycat.com.tw/uploads/neilproduct/3file/image/.thumbs/small_1742545669_45_11.png" class="card-img">
+                <div class="card-body">
+                    <span class="tag">喵喵隊</span>
+                    <h3>布偶貓</h3>
+                    <p>貓咪界的大狗狗！擁有絕美的海藍色眼睛，脾氣溫和且超級親人，被抱起時會像布偶一樣全身放鬆軟綿綿。</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://obs.line-scdn.net/0hnXcf8oWtMXdeHyYGbR1OIGdJPQZteyRxMGcsFXodahInJ2ohYXkqDX5NakBvf39xNWV7Q3gbZ0B6Jn52Nn0" class="card-img">
+                <div class="card-body">
+                    <span class="tag">喵喵隊</span>
+                    <h3>美短</h3>
+                    <p>充滿活力的好奇寶寶，身體健壯，擁有經典的虎斑花紋，對周圍的一切都充滿興趣。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="page">
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 30px;">🐾 毛孩與你的午茶菜單</h2>
+        
+        <div style="max-width: 800px; margin: 0 auto; display: grid; gap: 30px;">
+            
+            <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid var(--primary-orange);">
+                <h3 style="color: var(--primary-orange); display: flex; align-items: center; gap: 10px; margin-top: 0; border-bottom: 2px solid #fff5e6; padding-bottom: 10px;">
+                    <span>🍰</span> 療癒系主題餐點 (人類專屬)
+                </h3>
+                
+                <div style="margin-top: 20px;">
+                    <h4 style="color: var(--soft-brown); margin-bottom: 10px;">🐱 貓貓造型系列</h4>
+                    <div style="padding-left: 20px; margin-bottom: 20px;">
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>喵喵肉球瑪德蓮 <small style="color: #999;">(草莓/巧克力)</small></span> <span>$85</span>
+                        </p>
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>躲貓貓熔岩巧克力蛋糕</span> <span>$160</span>
+                        </p>
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>立體貓耳拉花拿鐵 <small style="color: #999;">(熱)</small></span> <span>$150</span>
+                        </p>
+                    </div>
+
+                    <h4 style="color: var(--soft-brown); margin-bottom: 10px;">🐶 狗狗造型系列</h4>
+                    <div style="padding-left: 20px;">
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>柴犬屁屁醬油糰子 <small style="color: #999;">(限量)</small></span> <span>$120</span>
+                        </p>
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>黃金骨頭手工奶油餅乾</span> <span>$70</span>
+                        </p>
+                        <p style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>汪汪焦糖布丁</span> <span>$110</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 8px solid var(--grass-green);">
+                <h3 style="color: var(--grass-green); display: flex; align-items: center; gap: 10px; margin-top: 0; border-bottom: 2px solid #f0f9f0; padding-bottom: 10px;">
+                    <span>🦴</span> 毛孩限定餐點 (純天然無調味)
+                </h3>
+                <div style="margin-top: 20px; padding-left: 20px;">
+                    <p style="display: flex; justify-content: space-between; margin: 10px 0;">
+                        <span>汪汪隊：鮮嫩雞肉蔬果凍</span> <span>$80</span>
+                    </p>
+                    <p style="display: flex; justify-content: space-between; margin: 10px 0;">
+                        <span>喵喵隊：嚴選鮮味鮪魚慕斯</span> <span>$90</span>
+                    </p>
+                    <p style="display: flex; justify-content: space-between; margin: 10px 0;">
+                        <span>通用：手工風乾燕麥雞肉餅</span> <span>$60</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <section id="rules" class="page">
+        <h2 style="text-align: center;">入店互動守則</h2>
+        <div style="background: white; padding: 40px; border-radius: 15px; border-left: 8px solid var(--primary-orange); max-width: 700px; margin: 0 auto;">
+            <ul style="font-size: 1.1rem; list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px;">👋 <strong>消毒雙手：</strong>入店請先清潔雙手，保護彼此健康。</li>
+                <li style="margin-bottom: 15px;">📸 <strong>禁止閃光燈：</strong>拍照請關閉閃光燈，避免驚嚇毛孩。</li>
+                <li style="margin-bottom: 15px;">🚫 <strong>不強行抱：</strong>請尊重毛孩意願，不要強行抱起或打擾睡覺。</li>
+                <li style="margin-bottom: 15px;">🦴 <strong>禁止亂餵：</strong>人類食物對毛孩有害，請勿隨意餵食。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="book" class="page">
+        <h2 style="text-align: center;">預約您的時光</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+            <div style="flex: 1; min-width: 300px;">
+                <div class="booking-form">
+                    <h3>💌 填寫訂位資訊</h3>
+                    <form onsubmit="event.preventDefault(); alert('感謝您的預約！我們將盡快與您聯繫。');">
+                        <input type="text" placeholder="聯絡人姓名" required>
+                        <input type="tel" placeholder="聯絡電話" required>
+                        <select>
+                            <option>預約人數：1 位</option>
+                            <option>預約人數：2 位</option>
+                            <option>預約人數：3 位以上</option>
+                        </select>
+                        <textarea placeholder="是否有攜帶自家寵物？或是特別需求？" rows="4"></textarea>
+                        <button type="submit" class="btn-submit">確認發送</button>
+                    </form>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 300px; padding-top: 20px;">
+                <h3>📍 店家資訊</h3>
+                <p><strong>地址：</strong>雲林縣虎尾鎮毛茸路 99 號</p>
+                <p><strong>電話：</strong>(05) 666-7777</p>
+                <p><strong>營業時間：</strong>10:00 - 20:00 (週一店休)</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Paws & Relax 貓狗咖啡廳 版權所有</p>
+        <p>雲林縣虎尾鎮毛茸路 99 號 | 預約專線(05) 666-7777</p>
+    </footer>
+
+    <script>
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.nav-links button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+
+            const activeBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(pageId));
+            if(activeBtn) activeBtn.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
